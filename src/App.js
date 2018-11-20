@@ -1,28 +1,46 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { client } from './index';
 
-class App extends Component {
+
+
+export default class App extends Component {
+  handleClick = () => {
+    client.writeData({ data: { isDarkMode: !client.isDarkMode } });
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Query query={MY_QUERY}>
+        {({ loading, data }) => {
+          if (loading) return null
+
+          return (
+            <div className="App">
+              <button onClick={this.handleClick}>
+                {data.isDarkMode ? <p>Light Mode</p> : <p>Dark Mode</p>}
+              </button>
+              <ul>
+                {data.todos.map((todo, i) => (
+                  <li key={i++}>{`${todo.id}: ${todo.value}`}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }}
+      </Query>
     );
   }
 }
 
-export default App;
+
+const MY_QUERY = gql`
+  query {
+    isDarkMode @client
+    todos @client {
+      id
+      value
+    }
+  }
+`
+
