@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Header from './Header';
 import LinkList from './LinkList';
 import CreateLink from './CreateLink';
 // import Fetcheroo from '../Fetcheroo';
@@ -10,10 +12,15 @@ import CreateLink from './CreateLink';
 export default class App extends Component {
   render() {
     return (
-      <div>
+      <div className="center w85">
         {/* <Fetcheroo /> */}
-        <LinkList />
-        <CreateLink />
+        <Header />
+        <div className="ph3 pv1 background-gray">
+          <Switch>
+            <Route exact path="/" component={LinkList} />
+            <Route exact path="/create" component={CreateLink} />
+          </Switch>
+        </div>
       </div>
     );
   }
