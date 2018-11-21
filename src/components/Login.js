@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import gql from 'graphql-tag';
-import { AUTH_TOKEN } from '../constants'
+import { AUTH_TOKEN } from '../constants';
 import { Mutation } from 'react-apollo';
 
 export default class Login extends Component {
