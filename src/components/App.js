@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import LinkList from './LinkList';
+import CreateLink from './CreateLink';
+// import Fetcheroo from '../Fetcheroo';
 // import { Query } from 'react-apollo';
 // import gql from 'graphql-tag';
 
@@ -8,7 +10,11 @@ import LinkList from './LinkList';
 export default class App extends Component {
   render() {
     return (
-      <LinkList />
+      <div>
+        {/* <Fetcheroo /> */}
+        <LinkList />
+        <CreateLink />
+      </div>
     );
   }
 }

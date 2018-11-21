@@ -12,7 +12,7 @@ export const defaults = {
 
 export const resolvers = {
   Mutation: {
-    storeProducts: async (_, { price }, { cache }) => {
+    storeProducts: (_, { price }, { cache }) => {
       const query = gql`
         query GetProducts {
           feed {
