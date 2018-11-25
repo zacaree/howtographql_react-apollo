@@ -17,9 +17,9 @@ export default class Link extends Component {
             <Mutation
               mutation={VOTE_MUTATION}
               variables={{ linkId: this.props.link.id }}
-              update={(store, { data: { vote } }) => (
+              update={(store, { data: { vote } }) => 
                 this.props.updateStoreAfterVote(store, vote, this.props.link.id)
-              )}
+              }
             >
               {voteMutation => (
                 <div className="ml1 gray f11" onClick={voteMutation}>▲</div>
