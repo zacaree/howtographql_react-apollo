@@ -15,12 +15,41 @@ export default class LinkList extends Component {
   };
 
 
+  _subscribeToNewLinks = subscribeToMore => {
+    subscribeToMore({
+      document: NEW_LINKS_SUBSCRIPTION,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const newLink = subscriptionData.data.newLink.node;
+
+        return Object.assign({}, prev, {
+          feed: {
+            links: [newLink, ...prev.feed.links],
+            count: prev.feed.links.length + 1,
+            __typename: prev.feed.__typename
+          }
+        })
+      }
+    })
+  }
+
+
+  _subscribeToNewVotes = subscribeToMore => {
+    subscribeToMore({
+      document: NEW_VOTES_SUBSCRIPTION
+    })
+  }
+
+
   render() {
     return (
       <Query query={FEED_QUERY}>
-        {({loading, data, error}) => {
+        {({ loading, data, error, subscribeToMore }) => {
           if (loading) return <div>Loading...</div>
           if (error) return <div>{ error }</div>
+
+          this._subscribeToNewLinks(subscribeToMore);
+          this._subscribeToNewVotes(subscribeToMore);
 
           const linksToRender = data.feed.links;
 
@@ -40,6 +69,7 @@ export default class LinkList extends Component {
     )
   }
 }
+
 
 export const FEED_QUERY = gql`
   {
@@ -62,4 +92,58 @@ export const FEED_QUERY = gql`
       }
     }
   }
-`
+`;
+
+
+const NEW_LINKS_SUBSCRIPTION = gql`
+  subscription {
+    newLink {
+      node {
+        id
+        url
+        description
+        createdAt
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
+
+const NEW_VOTES_SUBSCRIPTION = gql`
+  subscription {
+    newVote {
+      node {
+        id
+        link {
+          id
+          url
+          description
+          createdAt
+          postedBy {
+            id
+            name
+          }
+          votes {
+            id
+            user {
+              id
+            }
+          }
+        }
+        user {
+          id
+        }
+      }
+    }
+  }
+`;
