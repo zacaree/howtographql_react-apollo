@@ -26,7 +26,13 @@ export default class LinkList extends Component {
 
           return (
             <div>
-              {linksToRender.map((link, index) => <Link key={link.id} link={link} index={index} />)}
+              {linksToRender.map((link, index) => 
+              <Link
+                key={link.id}
+                link={link}
+                index={index}
+                updateStoreAfterVote={this._updateCacheAfterVote}
+              />)}
             </div>
           )
         }}
@@ -35,7 +41,7 @@ export default class LinkList extends Component {
   }
 }
 
-const FEED_QUERY = gql`
+export const FEED_QUERY = gql`
   {
     feed {
       links {

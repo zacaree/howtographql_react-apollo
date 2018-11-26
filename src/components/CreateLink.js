@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
+import { FEED_QUERY } from './LinkList';
 
 
 export default class CreateLink extends Component {
@@ -34,6 +35,14 @@ export default class CreateLink extends Component {
           mutation={POST_MUTATION}
           variables={{ description: description, url: url }}
           onCompleted={() => this.props.history.push('/')}
+          update={(store, { data: { post } }) => {
+            const data = store.readQuery({ query: FEED_QUERY })
+            data.feed.links.unshift(post)
+            store.writeQuery({
+              query: FEED_QUERY,
+              data
+            })
+          }}
         >
           {myPostMutation => (
             <button onClick={myPostMutation}>Submit</button>
