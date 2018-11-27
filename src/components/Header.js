@@ -13,6 +13,8 @@ class Header extends Component {
           <div className="fw7 mr1">Hacker News</div>
           <Link to="/" className="ml1 no-underline black">new</Link>
           <div className="ml1">|</div>
+          <Link to="/top" className="ml1 no-underline black">top</Link>
+          <div className="ml1">|</div>
           <Link to="/search" className="ml1 no-underline black">search</Link>
           {authToken && (
             <div className="flex">
@@ -24,8 +26,8 @@ class Header extends Component {
 
         <div className="flex flex-fixed">
           {authToken ? (
-            <div 
-              className="ml1 pointer black" 
+            <div
+              className="ml1 pointer black"
               onClick={() => {
                 localStorage.removeItem(AUTH_TOKEN)
                 this.props.history.push(`/`)
